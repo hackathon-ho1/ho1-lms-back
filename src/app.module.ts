@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { LectureModule } from './lecture/lecture.module';
+import { LectureModule } from './modules/lecture.module';
 
 @Module({
   imports: [LectureModule],

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LectureDto } from '../src/dto/lecture.dto';
+import { LectureDto } from '../src/dtos/lecture.dto';
 
 describe('Lecture', () => {
   let provider: LectureDto;
