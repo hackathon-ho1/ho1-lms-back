@@ -1,11 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class LectureService {
   async getCourses() {
-    try {
-    } catch (error) {
-      console.log(error);
-    }
+    throw new BadRequestException('잘못된 날짜입니다.');
+    return '응답';
   }
 }
