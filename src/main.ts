@@ -7,6 +7,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api', { exclude: ['health'] });
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  await app.listen(3000);
+  await app.listen(3010);
 }
 bootstrap();
