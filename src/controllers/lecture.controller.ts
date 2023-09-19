@@ -1,6 +1,23 @@
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Delete,
+  Patch,
+  Put,
+  Body,
+  Query,
+} from '@nestjs/common';
 
-@Controller('lecture')
+@Controller()
 export class LectureController {
-  async getLectures() {}
+  @Get('course')
+  async getCourses() {
+    try {
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
