@@ -11,7 +11,7 @@ import { Request, Response } from 'express';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  //private readonly logger = new Logger(AllExceptionsFilter.name);
+  constructor() {}
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -25,10 +25,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       status = exception.getStatus();
       message = exception.message;
     }
-
-    // 일단 로거 구현 필요
-    //커스텀로거일 땐 실리한 에러니까 제외하고 로그 남기게 할 예정
-    //this.logger.error(`Error: ${message}`, exception);
 
     response.status(status).json({
       statusCode: status,
