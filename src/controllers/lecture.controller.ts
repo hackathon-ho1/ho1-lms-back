@@ -9,21 +9,14 @@ import {
   Body,
   Query,
 } from '@nestjs/common';
-import { BaseResponse } from '../baseResponse';
 import { LectureService } from 'src/services/lecture.service';
 
 @Controller()
 export class LectureController {
-  constructor(private readonly service: LectureService) {}
+  constructor(private readonly lecturerService: LectureService) {}
 
   @Get('course')
   async getCourses() {
-    let result;
-    try {
-      result = await this.service.getCourses();
-    } catch (error) {
-      throw error;
-    }
-    return BaseResponse.success(result);
+    return await this.lecturerService.getCourses();
   }
 }
