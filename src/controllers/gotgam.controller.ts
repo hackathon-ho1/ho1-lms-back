@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 
-@Controller('grass')
-export class GrassController {
+@Controller('gotgam')
+export class GotgamController {
   @Get()
-  async getAllGlass() {
+  async getAllGotgam() {
     console.log('hi');
     return 'world';
   }
