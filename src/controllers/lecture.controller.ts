@@ -1,6 +1,22 @@
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Delete,
+  Patch,
+  Put,
+  Body,
+  Query,
+} from '@nestjs/common';
+import { LectureService } from 'src/services/lecture.service';
 
-@Controller('lecture')
+@Controller()
 export class LectureController {
-  async getLectures() {}
+  constructor(private readonly lecturerService: LectureService) {}
+
+  @Get('course')
+  async getCourses() {
+    return await this.lecturerService.getCourses();
+  }
 }

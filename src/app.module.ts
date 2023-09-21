@@ -7,7 +7,13 @@ import { LectureProvider } from './providers/lecture.provider';
 import { GrassModule } from './modules/grass.module';
 
 @Module({
-  imports: [LectureModule, ConfigModule.forRoot({}), GrassModule],
+  imports: [
+    LectureModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService, LectureProvider],
 })
