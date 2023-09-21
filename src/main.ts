@@ -11,7 +11,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new LoggingInterceptor(logger));
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  await app.listen(3010);
-  console.log(`listening on port ${3010}`);
+  await app.listen(process.env.PORT);
+  console.log(`listening on port ${process.env.PORT}`);
 }
 bootstrap();
