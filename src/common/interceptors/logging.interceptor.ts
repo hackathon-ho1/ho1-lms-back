@@ -58,7 +58,7 @@ export class LoggingInterceptor implements NestInterceptor {
         // 에러를 다시 던져서 전달
         return throwError(() => error);
       }),
-      map((data) => {
+      map((data: SuccessResult) => {
         const endTime = Date.now();
         const responseTime = endTime - startTime;
 
@@ -83,7 +83,8 @@ export class LoggingInterceptor implements NestInterceptor {
 
         return {
           statusCode: 200,
-          data,
+          message: data.message,
+          data: data.data,
         };
       }),
     );

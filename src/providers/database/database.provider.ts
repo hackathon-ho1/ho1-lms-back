@@ -14,10 +14,10 @@ export class DatabaseProvider {
     this.pool = mysql.createPool(config);
   }
 
-  async execute(query: string) {
+  async execute(query: string, values?: any) {
     const connection = await this.pool.getConnection();
     try {
-      const [rows, fields] = await connection.query(query);
+      const [rows, fields] = await connection.query(query, values);
 
       connection.release();
 
@@ -26,11 +26,12 @@ export class DatabaseProvider {
       if (connection) {
         connection.release();
       }
-      throw new InternalServerErrorException({
-        message: '쿼리 실행에 실패했습니다. (Database Error)',
-        data: query,
-        originMessage: err.message,
-      });
+      throw new Error(`${err.message}\n${err.stack}`);
+      // throw new InternalServerErrorException({
+      //   message: '쿼리 실행에 실패했습니다. (Database Error)',
+      //   data: query,
+      //   originMessage: err.message,
+      // });
     }
   }
 
@@ -50,9 +51,9 @@ export class DatabaseProvider {
     }
   }
 
-  async executeInTransaction(connection, query) {
+  async executeInTransaction(connection, query, values?: any) {
     try {
-      const [rows, fields] = await connection.query(query);
+      const [rows, fields] = await connection.query(query, values);
       return [rows, fields];
     } catch (err) {
       throw new InternalServerErrorException({
