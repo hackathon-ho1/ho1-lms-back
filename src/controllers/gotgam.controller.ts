@@ -21,7 +21,8 @@ export class GotgamController {
   }
 
   @Get(':gotgamDate')
-  async getOneGotgam(@Param('gotgamDate') gotgamDate: string, @Body('userId') userId: number) {
+  async getOneGotgam(@Param('gotgamDate') gotgamDate: string) {
+    const userId = 1
     const result = await this.gotgamService.getOneGotgam(gotgamDate, userId)
 
     return {
