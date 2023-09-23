@@ -3,7 +3,7 @@ import {
   GetCoursesResponseDto,
   GetCourseResponseDto,
 } from 'src/dtos/lecture.dto';
-import { Course } from 'src/types/lecture.types';
+import { Course, Lecture } from 'src/types/lecture.types';
 
 @Injectable()
 export class LectureMapper {
@@ -44,6 +44,18 @@ export class LectureMapper {
         lectureCount: course.lectureCount,
         doneCount: course.doneCount,
         progress: course.progress,
+      };
+    });
+  }
+
+  lecturesDomainToDto(lectures): Lecture[] {
+    return lectures.map((lecture) => {
+      return {
+        lectureId: lecture.lectureId,
+        lectureTitle: lecture.lectureTitle,
+        lectureDescription: lecture.lectureDescription,
+        VideoUrl: lecture.VideoUrl,
+        isDone: lecture.isDone === 1,
       };
     });
   }

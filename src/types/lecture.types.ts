@@ -14,3 +14,11 @@ export type CourseInfo = {
   totalLectureCount: number;
   doneLectureCount: number;
 };
+
+export type Lecture = {
+  lectureId: number;
+  lectureTitle: string;
+  lectureDescription: string;
+  VideoUrl: string;
+  isDone: boolean;
+};

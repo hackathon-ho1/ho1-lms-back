@@ -2,10 +2,14 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { LectureProvider } from 'src/providers/lecture.provider';
 import { Course } from 'src/types/lecture.types';
 import * as moment from 'moment';
+import { LectureMapper } from 'src/mapper/lecture.mapper';
 
 @Injectable()
 export class LectureService {
-  constructor(private readonly lectureProvider: LectureProvider) {}
+  private mapper: LectureMapper;
+  constructor(private readonly lectureProvider: LectureProvider) {
+    this.mapper = new LectureMapper();
+  }
 
   async getCourses(
     userId: number,
@@ -30,10 +34,12 @@ export class LectureService {
 
     const getLecturesByChaterId = await Promise.all(
       getChaptersByCourseId.map(async (chapter) => {
-        chapter.lectures = await this.lectureProvider.getLecturesByChaterId(
+        const lecturesResult = await this.lectureProvider.getLecturesByChaterId(
           chapter.chapterId,
           userId,
         );
+        const lectures = this.mapper.lecturesDomainToDto(lecturesResult);
+        chapter.lectures = lectures;
 
         return chapter;
       }),
