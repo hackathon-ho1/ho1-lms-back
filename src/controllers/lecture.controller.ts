@@ -49,11 +49,14 @@ export class LectureController {
     return this.mapper.courseDomainToDto(result);
   }
 
-  @Get('lecture/:lectureId')
-  async getLecture(
+  @Post('lecture/:lectureId')
+  async lectureDone(
     @Param('lectureId') lectureId: string,
     @Query('userId') userId: number,
   ) {
-    return await this.lecturerService.getLecture(userId, lectureId);
+    const result = await this.lecturerService.lectureDone(userId, lectureId);
+    return {
+      message: '강의 수강 완료에 성공하였습니다',
+    };
   }
 }
