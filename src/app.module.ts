@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { LectureModule } from './modules/lecture.module';
 import { LectureProvider } from './providers/lecture.provider';
 import { DatabaseProvider } from './providers/database/database.provider';
+import { GotgamModule } from './modules/gotgam.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { DatabaseProvider } from './providers/database/database.provider';
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     LectureModule,
+    GotgamModule
   ],
   controllers: [AppController],
   providers: [AppService, DatabaseProvider],
