@@ -32,7 +32,7 @@ export class LectureController {
     @Query('cursor') cursor: number,
     @Query('limit') limit: number,
   ): Promise<GetCoursesResponseDto> {
-    if (!cursor) {
+    if (!cursor || cursor == 0) {
       cursor = 99999999999999;
     }
     const result = await this.lecturerService.getCourses(userId, cursor, limit);
