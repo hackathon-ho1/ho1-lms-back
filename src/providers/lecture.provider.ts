@@ -88,14 +88,35 @@ export class LectureProvider {
     return result[0];
   }
 
-  async getCourseProgress(couserId: number) {
+  async getLecture(lectureId: string): Promise<any> {
     const result = await this.databaseProvider.execute(
-      `SELECT count(*) 
-        FROM lecture 
-        WHERE courseId = ?
-        ;`,
-      [couserId],
+      `SELECT lecture.id AS lectureId,
+            lecture.courseId AS courseId,
+            lecture.chapterId AS chapterId,
+            lecture.title AS lectureTitle,
+            lecture.description AS lectureDescription,
+            lecture.videoUrl AS VideoUrl
+        FROM lecture
+        WHERE lecture.id = ?
+    ;`,
+      [lectureId],
     );
-    return this.mapper.getProgress(result[0]);
+    return result[0];
+  }
+
+  async lectureDone(
+    userId: number,
+    courseId: number,
+    chapterId: number,
+    lectureId: string,
+    now: string,
+  ) {
+    const result = await this.databaseProvider.execute(
+      `INSERT INTO gotgam (userId, courseId, chapterId, lectureId, achivedAt)
+        VALUES (?, ?, ?, ?, ?)
+    ;`,
+      [userId, courseId, chapterId, lectureId, now],
+    );
+    return result[0];
   }
 }
