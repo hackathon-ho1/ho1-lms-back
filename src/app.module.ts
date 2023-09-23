@@ -8,13 +8,13 @@ import { DatabaseProvider } from './providers/database/database.provider';
 
 @Module({
   imports: [
-    LectureModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    LectureModule,
   ],
   controllers: [AppController],
-  providers: [AppService, LectureProvider, DatabaseProvider],
+  providers: [AppService, DatabaseProvider],
 })
 export class AppModule {}

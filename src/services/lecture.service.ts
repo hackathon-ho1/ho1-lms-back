@@ -1,11 +1,37 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
+import { LectureProvider } from 'src/providers/lecture.provider';
+import { Course } from 'src/types/lecture.types';
 
 @Injectable()
 export class LectureService {
-  constructor(private readonly DatabaseProvider) {}
-  async getCourses() {
-    //throw new Error();
-    //throw new BadRequestException('잘못된 날짜입니다.');
-    return { name: 'test' };
+  constructor(private readonly lectureProvider: LectureProvider) {}
+
+  async getCourses(userId: number): Promise<Course[]> {
+    const getCourseresult = await this.lectureProvider.getCourses(userId);
+    return getCourseresult;
   }
+  async getCourse(userId: number, courseId: string) {
+    const getCourseresult = await this.lectureProvider.getCourse(
+      courseId,
+      userId,
+    );
+    const course = getCourseresult[0];
+    const getChaptersByCourseId =
+      await this.lectureProvider.getChaptersByCourseId(courseId, userId);
+
+    const getLecturesByChaterId = await Promise.all(
+      getChaptersByCourseId.map(async (chapter) => {
+        chapter.lectures = await this.lectureProvider.getLecturesByChaterId(
+          chapter.chapterId,
+          userId,
+        );
+
+        return chapter;
+      }),
+    );
+    course.chapters = getLecturesByChaterId;
+
+    return course;
+  }
+  async getLecture(userId: number, lectureId: string) {}
 }
