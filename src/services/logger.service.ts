@@ -29,7 +29,7 @@ export class Logger implements LoggerService {
       transports: [
         // 콘솔 출력 설정 (info 레벨 이상 출력)
         new winston.transports.Console({
-          level: 'info',
+          level: 'http',
         }),
         // 일별 로그 파일 생성 및 저장 설정
         new DailyRotateFile({

@@ -4,8 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LectureModule } from './modules/lecture.module';
 import { LectureProvider } from './providers/lecture.provider';
+import { DatabaseProvider } from './providers/database/database.provider';
 import { GotgamModule } from './modules/gotgam.module';
-import { GotgamProvider } from './providers/gotgam.provider';
 
 @Module({
   imports: [
@@ -17,6 +17,6 @@ import { GotgamProvider } from './providers/gotgam.provider';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, LectureProvider, GotgamProvider],
+  providers: [AppService, LectureProvider, DatabaseProvider],
 })
 export class AppModule {}

@@ -77,8 +77,8 @@ export class LoggingInterceptor implements NestInterceptor {
               .join(',\n') +
             `\n}\n` +
             `========================[RESPONSE]========================\n` +
-            `Response Time: ${Date.now() - startTime}ms\n` +
-            `Response Body: ${data}`,
+            `Response Time: ${Date.now() - startTime}ms\n`,
+          //+ `Response Body: ${data}`,
         );
 
         return {
