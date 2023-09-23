@@ -23,14 +23,14 @@ export class LectureService {
     );
     return getCourseresult;
   }
-  async getCourse(userId: number, courseId: string) {
+  async getCourse(userId: number, courseId: number) {
     const getCourseresult = await this.lectureProvider.getCourse(
       courseId,
       userId,
     );
     const course = getCourseresult[0];
     const getChaptersByCourseId =
-      await this.lectureProvider.getChaptersByCourseId(courseId, userId);
+      await this.lectureProvider.getChaptersByCourseId(userId, courseId);
 
     const getLecturesByChaterId = await Promise.all(
       getChaptersByCourseId.map(async (chapter) => {

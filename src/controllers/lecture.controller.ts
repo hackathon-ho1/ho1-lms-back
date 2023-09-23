@@ -42,7 +42,7 @@ export class LectureController {
   // 코스 상세 조회
   @Get(':courseId')
   async getCourse(
-    @Param('courseId') courseId: string,
+    @Param('courseId') courseId: number,
     @Query('userId') userId: number,
   ) {
     const result = await this.lecturerService.getCourse(userId, courseId);

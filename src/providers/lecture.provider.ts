@@ -52,7 +52,7 @@ export class LectureProvider {
     );
     return result[0];
   }
-  async getChaptersByCourseId(courseId, userId): Promise<any> {
+  async getChaptersByCourseId(userId, courseId): Promise<any> {
     const result = await this.databaseProvider.execute(
       `SELECT chapter.id AS chapterId,
             chapter.title AS chapterTitle,
@@ -65,7 +65,7 @@ export class LectureProvider {
       WHERE chapter.courseId = ?
       GROUP BY chapterId
     ;`,
-      [courseId, userId],
+      [userId, courseId],
     );
 
     return result[0];
