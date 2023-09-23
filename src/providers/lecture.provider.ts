@@ -33,7 +33,7 @@ export class LectureProvider {
     return this.mapper.coursesEntityToDomain(result[0]);
   }
 
-  async getCourse(courseId, userId): Promise<any> {
+  async getCourse(userId, courseId): Promise<any> {
     const result = await this.databaseProvider.execute(
       `SELECT course.id AS courseId, 
             course.title AS courseTitle, 
@@ -48,7 +48,7 @@ export class LectureProvider {
       WHERE course.id = ?
       GROUP BY course.id
     ;`,
-      [courseId, userId],
+      [userId, courseId],
     );
     return result[0];
   }
@@ -71,7 +71,7 @@ export class LectureProvider {
     return result[0];
   }
 
-  async getLecturesByChaterId(chapterId, userId) {
+  async getLecturesByChaterId(userId, courseId) {
     const result = await this.databaseProvider.execute(
       `SELECT lecture.id AS lectureId,
             lecture.title AS lectureTitle,
@@ -83,7 +83,7 @@ export class LectureProvider {
         LEFT JOIN gotgam ON lecture.id = gotgam.lectureId AND gotgam.userId = ?
       WHERE lecture.chapterId = ?
     ;`,
-      [chapterId, userId],
+      [userId, courseId],
     );
     return result[0];
   }

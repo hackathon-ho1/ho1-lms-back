@@ -25,18 +25,22 @@ export class LectureService {
   }
   async getCourse(userId: number, courseId: number) {
     const getCourseresult = await this.lectureProvider.getCourse(
-      courseId,
       userId,
+      courseId,
     );
+    if (getCourseresult.length < 1 || getCourseresult.length > 1) {
+      throw new BadRequestException('코스를 찾을 수 없습니다.');
+    }
     const course = getCourseresult[0];
+
     const getChaptersByCourseId =
       await this.lectureProvider.getChaptersByCourseId(userId, courseId);
 
     const getLecturesByChaterId = await Promise.all(
       getChaptersByCourseId.map(async (chapter) => {
         const lecturesResult = await this.lectureProvider.getLecturesByChaterId(
-          chapter.chapterId,
           userId,
+          chapter.chapterId,
         );
         const lectures = this.mapper.lecturesDomainToDto(lecturesResult);
         chapter.lectures = lectures;
