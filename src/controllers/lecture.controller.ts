@@ -33,7 +33,7 @@ export class LectureController {
     @Query('limit') limit: number,
   ): Promise<GetCoursesResponseDto> {
     if (!cursor) {
-      cursor = Infinity;
+      cursor = 99999999999999;
     }
     const result = await this.lecturerService.getCourses(userId, cursor, limit);
     return this.mapper.coursesDomainToDto(result);
