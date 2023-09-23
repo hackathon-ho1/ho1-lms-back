@@ -14,7 +14,7 @@ export class DatabaseProvider {
     this.pool = mysql.createPool(config);
   }
 
-  async execute(query: string, values?: any[]) {
+  async execute(query: string, values?: any[] | undefined) {
     const convertedValues = this.convertToNumbers(values);
     const connection = await this.pool.getConnection();
     try {
@@ -79,7 +79,8 @@ export class DatabaseProvider {
     }
   }
 
-  convertToNumbers(arr: (string | number)[]): number[] {
+  convertToNumbers(arr: (string | number)[] | undefined): number[] {
+    if (!arr) return;
     const result: number[] = [];
     for (const item of arr) {
       if (typeof item === 'string' && /^\d+$/.test(item)) {
