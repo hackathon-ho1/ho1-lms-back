@@ -15,10 +15,10 @@ export class DatabaseProvider {
   }
 
   async execute(query: string, values?: any[]) {
-    console.log(Object.keys(values));
+    const convertedValues = this.convertToNumbers(values);
     const connection = await this.pool.getConnection();
     try {
-      const [rows, fields] = await connection.query(query, values);
+      const [rows, fields] = await connection.query(query, convertedValues);
 
       connection.release();
 
@@ -77,5 +77,17 @@ export class DatabaseProvider {
         originMessage: err.message,
       });
     }
+  }
+
+  convertToNumbers(arr: (string | number)[]): number[] {
+    const result: number[] = [];
+    for (const item of arr) {
+      if (typeof item === 'string' && /^\d+$/.test(item)) {
+        result.push(Number(item));
+      } else {
+        result.push(item as number);
+      }
+    }
+    return result;
   }
 }
