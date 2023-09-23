@@ -33,7 +33,7 @@ export class LectureProvider {
     return this.mapper.coursesEntityToDomain(result[0]);
   }
 
-  async getCourse(userId, courseId): Promise<any> {
+  async getCourse(userId: number, courseId: number): Promise<any> {
     const result = await this.databaseProvider.execute(
       `SELECT course.id AS courseId, 
             course.title AS courseTitle, 

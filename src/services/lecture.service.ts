@@ -28,6 +28,7 @@ export class LectureService {
       userId,
       courseId,
     );
+    console.log(userId, courseId, getCourseresult);
     if (getCourseresult.length < 1 || getCourseresult.length > 1) {
       throw new BadRequestException('코스를 찾을 수 없습니다.');
     }
