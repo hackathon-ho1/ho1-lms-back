@@ -6,9 +6,14 @@ import { DatabaseProvider } from 'src/providers/database/database.provider';
 export class GotgamService {
   constructor(private readonly databaseProvider: DatabaseProvider) {}
 
-  async getAllGotgam(monthValue) {
+  async getAllGotgam(monthValue, userId) {
     const currentYear = new Date().getFullYear()
-    const sqlStatement = `SELECT achievedAt FROM gotgam WHERE YEAR(achievedAt) = ${currentYear} AND MONTH(achievedAt) = ${monthValue} ORDER BY achievedAt ASC`;
+    const sqlStatement = `
+    SELECT achievedAt 
+    FROM gotgam 
+    WHERE YEAR(achievedAt) = ${currentYear} AND MONTH(achievedAt) = ${monthValue} AND userId = ${userId}
+    ORDER BY achievedAt ASC
+    `;
     const [getAllGotgamData] = await this.databaseProvider.execute(sqlStatement) as RowDataPacket[][];
 
     let month = new Array(31).fill(0)
