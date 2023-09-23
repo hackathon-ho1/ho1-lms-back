@@ -7,7 +7,7 @@ import {ValidationPipe} from './common/pipes/validation.pipe'
 
 async function bootstrap() {
   const logger = new Logger();
-  const app = await NestFactory.create(AppModule, { logger });
+  const app = await NestFactory.create(AppModule, { logger, cors: true });
   app.setGlobalPrefix('api', { exclude: ['health'] });
   app.useGlobalInterceptors(new LoggingInterceptor(logger));
   app.useGlobalFilters(new AllExceptionsFilter());
