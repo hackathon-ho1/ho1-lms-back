@@ -1,23 +1,54 @@
 import { Injectable } from '@nestjs/common';
-import { AchievedLectureDto } from 'src/dtos/gotgam.dto';
+import { RowDataPacket } from 'mysql2';
 import { DatabaseProvider } from 'src/providers/database/database.provider';
 
 @Injectable()
 export class GotgamService {
   constructor(private readonly databaseProvider: DatabaseProvider) {}
 
-  async getAllGotgam() {
-    const sqlStatement = `
-    select a.id, a.lectureId, d.title as courseTitle, c.title as chapterTitle, b.title as lectureTitle
-    from gotgam a
-    inner join lecture b
-    on a.lectureId = b.id
-    inner join chapter c
-    on b.chapterId = c.id
-    inner join course d
-    on c.courseId = d.id`;
+  async getAllGotgam(monthValue) {
+    const currentYear = new Date().getFullYear()
+    const sqlStatement = `SELECT achievedAt FROM gotgam WHERE YEAR(achievedAt) = ${currentYear} AND MONTH(achievedAt) = ${monthValue} ORDER BY achievedAt ASC`;
+    const [getAllGotgamData] = await this.databaseProvider.execute(sqlStatement) as RowDataPacket[][];
 
-    const [getAllGotgamData] = await this.databaseProvider.execute(sqlStatement);
-    return getAllGotgamData;
+    let month = new Array(31).fill(0)
+    for (const gotgam of getAllGotgamData) {
+      const day = Number(gotgam.achievedAt.toISOString().slice(8, 10))
+      ++month[day-1]
+    }
+
+    for (let i = 0; i < month.length; i++) {
+      if (month[i] > 0 && month[i] < 4) {
+        month[i] = 1
+      } else if (month[i] > 3 && month[i] < 7) {
+        month[i] = 2
+      } else if (month[i] > 6){
+        month[i] = 3
+      }
+    }
+    
+    return month
+
+  }
+
+  async getOneGotgam(gotgamDate, userId){
+    const sqlStatement = `
+    SELECT a.id, a.lectureId, a.achievedAt, d.title AS courseTitle, c.title AS chapterTitle, b.title AS lectureTitle
+    FROM gotgam a
+    INNER JOIN lecture b
+    ON a.lectureId = b.id
+    INNER JOIN chapter c
+    ON b.chapterId = c.id
+    INNER JOIN course d
+    ON c.courseId = d.id
+    WHERE DATE(achievedAt) = '${gotgamDate}' AND userId = ${userId}
+    `;
+
+    const [result] = await this.databaseProvider.execute(sqlStatement) as RowDataPacket[][]
+    for (const item of result) {
+      item.achievedAt = item.achievedAt.toISOString().split('T')[0]
+    }
+
+    return result
   }
 }

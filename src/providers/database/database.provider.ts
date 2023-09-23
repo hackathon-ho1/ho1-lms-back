@@ -26,6 +26,7 @@ export class DatabaseProvider {
       if (connection) {
         connection.release();
       }
+      // throw new Error(`${err.message}\n${err.stack}`);
       throw new InternalServerErrorException({
         message: '쿼리 실행에 실패했습니다. (Database Error)',
         data: query,

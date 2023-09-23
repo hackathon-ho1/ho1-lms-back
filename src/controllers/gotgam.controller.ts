@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { AchievedLectureDto } from 'src/dtos/gotgam.dto';
+import { Body, Controller, Get, Query, Param } from '@nestjs/common';
+import { MonthValue } from 'src/common/monToNum';
 import { GotgamService } from 'src/services/gotgam.service';
+
+
 
 @Controller('gotgam')
 export class GotgamController {
@@ -8,8 +10,23 @@ export class GotgamController {
 
   @Get()
   async getAllGotgam(@Query('month') month: string) {
-    console.log(month)
-    const result = await this.gotgamService.getAllGotgam();
-    return result;
+    // month의 변수를 MonthValue enum의 키로 강제 형변환
+    const monthValue = MonthValue[month as keyof typeof MonthValue] || MonthValue.jan; // 유효하지 않은 값이 올 경우: Jan으로 기본값
+
+    const result = await this.gotgamService.getAllGotgam(monthValue);
+    return {
+      message: '곶감 전체 조회에 성공했습니다.',
+      data: result
+    }
+  }
+
+  @Get(':gotgamDate')
+  async getOneGotgam(@Param('gotgamDate') gotgamDate: string, @Body('userId') userId: number) {
+    const result = await this.gotgamService.getOneGotgam(gotgamDate, userId)
+
+    return {
+      message: '곶감 상세 조회에 성공했습니다.',
+      data: result
+    }
   }
 }
