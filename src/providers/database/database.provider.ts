@@ -14,7 +14,8 @@ export class DatabaseProvider {
     this.pool = mysql.createPool(config);
   }
 
-  async execute(query: string, values?: any) {
+  async execute(query: string, values?: any[]) {
+    console.log(Object.keys(values));
     const connection = await this.pool.getConnection();
     try {
       const [rows, fields] = await connection.query(query, values);
@@ -26,6 +27,7 @@ export class DatabaseProvider {
       if (connection) {
         connection.release();
       }
+      console.log(err);
       throw new Error(`${err.message}\n${err.stack}`);
       // throw new InternalServerErrorException({
       //   message: '쿼리 실행에 실패했습니다. (Database Error)',

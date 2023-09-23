@@ -10,15 +10,24 @@ export class LectureProvider {
     this.mapper = new LectureMapper();
   }
 
-  async getCourses(userId): Promise<Course[]> {
+  async getCourses(
+    userId: number,
+    cursor: number,
+    limit: number,
+  ): Promise<Course[]> {
     const result = await this.databaseProvider.execute(
-      `SELECT course.*, COUNT(lecture.id) AS lectureCount, COUNT(gotgam.id) AS doneCount, CAST(IFNULL(COUNT(gotgam.id)/COUNT(lecture.id)*100, 0) AS SIGNED) AS progress
+      `SELECT course.*, 
+            COUNT(lecture.id) AS lectureCount, 
+            COUNT(gotgam.id) AS doneCount, 
+            CAST(IFNULL(COUNT(gotgam.id)/COUNT(lecture.id)*100, 0) AS SIGNED) AS progress
         FROM course
         LEFT JOIN lecture ON course.id = lecture.courseId 
         LEFT JOIN gotgam ON course.id = gotgam.courseId AND lecture.id = gotgam.lectureId AND gotgam.userId = ?
+        WHERE course.id < ?
         GROUP BY course.id
-    ;`,
-      [userId],
+        ORDER BY course.id DESC
+        LIMIT ?;`,
+      [userId, cursor, limit],
     );
 
     return this.mapper.coursesEntityToDomain(result[0]);

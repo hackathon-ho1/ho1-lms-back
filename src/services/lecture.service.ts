@@ -6,8 +6,16 @@ import { Course } from 'src/types/lecture.types';
 export class LectureService {
   constructor(private readonly lectureProvider: LectureProvider) {}
 
-  async getCourses(userId: number): Promise<Course[]> {
-    const getCourseresult = await this.lectureProvider.getCourses(userId);
+  async getCourses(
+    userId: number,
+    cursor: number,
+    limit: number,
+  ): Promise<Course[]> {
+    const getCourseresult = await this.lectureProvider.getCourses(
+      userId,
+      cursor,
+      limit,
+    );
     return getCourseresult;
   }
   async getCourse(userId: number, courseId: string) {

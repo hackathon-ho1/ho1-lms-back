@@ -15,6 +15,7 @@ import {
 } from 'src/dtos/lecture.dto';
 import { LectureMapper } from 'src/mapper/lecture.mapper';
 import { LectureService } from 'src/services/lecture.service';
+import { query } from 'winston';
 
 @Controller('course')
 export class LectureController {
@@ -24,20 +25,27 @@ export class LectureController {
     this.mapper = new LectureMapper();
   }
 
+  // 코스 목록 조회
   @Get()
   async getCourses(
     @Query('userId') userId: number,
+    @Query('cursor') cursor: number,
+    @Query('limit') limit: number,
   ): Promise<GetCoursesResponseDto> {
-    const result = await this.lecturerService.getCourses(userId);
+    if (!cursor) {
+      cursor = Infinity;
+    }
+    const result = await this.lecturerService.getCourses(userId, cursor, limit);
     return this.mapper.coursesDomainToDto(result);
   }
+
+  // 코스 상세 조회
   @Get(':courseId')
   async getCourse(
     @Param('courseId') courseId: string,
     @Query('userId') userId: number,
   ) {
     const result = await this.lecturerService.getCourse(userId, courseId);
-    console.log(result);
     return this.mapper.courseDomainToDto(result);
   }
 
