@@ -14,10 +14,11 @@ export class DatabaseProvider {
     this.pool = mysql.createPool(config);
   }
 
-  async execute(query: string) {
+  async execute(query: string, values?: any[]) {
+    const convertedValues = this.convertToNumbers(values);
     const connection = await this.pool.getConnection();
     try {
-      const [rows, fields] = await connection.query(query);
+      const [rows, fields] = await connection.query(query, convertedValues);
 
       connection.release();
 
@@ -26,12 +27,13 @@ export class DatabaseProvider {
       if (connection) {
         connection.release();
       }
-      // throw new Error(`${err.message}\n${err.stack}`);
-      throw new InternalServerErrorException({
-        message: '쿼리 실행에 실패했습니다. (Database Error)',
-        data: query,
-        originMessage: err.message,
-      });
+      console.log(err);
+      throw new Error(`${err.message}\n${err.stack}`);
+      // throw new InternalServerErrorException({
+      //   message: '쿼리 실행에 실패했습니다. (Database Error)',
+      //   data: query,
+      //   originMessage: err.message,
+      // });
     }
   }
 
@@ -51,9 +53,9 @@ export class DatabaseProvider {
     }
   }
 
-  async executeInTransaction(connection, query) {
+  async executeInTransaction(connection, query, values?: any) {
     try {
-      const [rows, fields] = await connection.query(query);
+      const [rows, fields] = await connection.query(query, values);
       return [rows, fields];
     } catch (err) {
       throw new InternalServerErrorException({
@@ -75,5 +77,17 @@ export class DatabaseProvider {
         originMessage: err.message,
       });
     }
+  }
+
+  convertToNumbers(arr: (string | number)[]): number[] {
+    const result: number[] = [];
+    for (const item of arr) {
+      if (typeof item === 'string' && /^\d+$/.test(item)) {
+        result.push(Number(item));
+      } else {
+        result.push(item as number);
+      }
+    }
+    return result;
   }
 }

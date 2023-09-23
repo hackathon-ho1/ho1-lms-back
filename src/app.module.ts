@@ -9,14 +9,14 @@ import { GotgamModule } from './modules/gotgam.module';
 
 @Module({
   imports: [
-    LectureModule,
-    GotgamModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    LectureModule,
+    GotgamModule
   ],
   controllers: [AppController],
-  providers: [AppService, LectureProvider, DatabaseProvider],
+  providers: [AppService, DatabaseProvider],
 })
 export class AppModule {}
