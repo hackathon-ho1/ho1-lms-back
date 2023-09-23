@@ -112,7 +112,7 @@ export class LectureProvider {
     now: string,
   ) {
     const result = await this.databaseProvider.execute(
-      `INSERT INTO gotgam (userId, courseId, chapterId, lectureId, achivedAt)
+      `INSERT INTO gotgam (userId, courseId, chapterId, lectureId, achievedAt)
         VALUES (?, ?, ?, ?, ?)
     ;`,
       [userId, courseId, chapterId, lectureId, now],
