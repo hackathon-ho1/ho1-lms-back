@@ -17,7 +17,7 @@ export class LectureProvider {
   ): Promise<Course[]> {
     const result = await this.databaseProvider.execute(
       `SELECT course.*, 
-            COUNT(lecture.id) AS lectureCount, 
+            COUNT(lecdture.id) AS lectureCount, 
             COUNT(gotgam.id) AS doneCount, 
             CAST(IFNULL(COUNT(gotgam.id)/COUNT(lecture.id)*100, 0) AS SIGNED) AS progress
         FROM course

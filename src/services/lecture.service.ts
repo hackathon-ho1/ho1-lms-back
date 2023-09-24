@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { LectureProvider } from 'src/providers/lecture.provider';
 import { Course } from 'src/types/lecture.types';
 import * as moment from 'moment';
@@ -24,15 +28,14 @@ export class LectureService {
     return getCourseresult;
   }
   async getCourse(userId: number, courseId: number) {
-    const getCourseresult = await this.lectureProvider.getCourse(
+    const getCourseResult = await this.lectureProvider.getCourse(
       userId,
       courseId,
     );
-    console.log(userId, courseId, getCourseresult);
-    if (getCourseresult.length < 1 || getCourseresult.length > 1) {
+    if (getCourseResult.length < 1 || getCourseResult.length > 1) {
       throw new BadRequestException('코스를 찾을 수 없습니다.');
     }
-    const course = getCourseresult[0];
+    const course = getCourseResult[0];
 
     const getChaptersByCourseId =
       await this.lectureProvider.getChaptersByCourseId(userId, courseId);
