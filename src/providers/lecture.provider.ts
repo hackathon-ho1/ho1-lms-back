@@ -20,7 +20,7 @@ export class LectureProvider {
             COUNT(lecture.id) AS lectureCount, 
             COUNT(gotgam.id) AS doneCount, 
             CAST(IFNULL(COUNT(gotgam.id)/COUNT(lecture.id)*100, 0) AS SIGNED) AS progress
-        FROM courdse
+        FROM course
         LEFT JOIN lecture ON course.id = lecture.courseId 
         LEFT JOIN gotgam ON course.id = gotgam.courseId AND lecture.id = gotgam.lectureId AND gotgam.userId = ?
         WHERE course.id < ?
