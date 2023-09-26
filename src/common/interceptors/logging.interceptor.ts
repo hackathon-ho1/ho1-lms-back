@@ -53,7 +53,7 @@ export class LoggingInterceptor implements NestInterceptor {
         //따로 로그를 남겨야 할만한 에러일 경우 에러 정보 로깅. 지금은 익셉션이나 에러를 커스텀하지 않아서 500이상을 기준으로 정함
         if (status >= 500) {
           this.logger.error(
-            Object.keys(error)
+            Object.getOwnPropertyNames(error)
               .map((key) => {
                 const value = error[key];
                 if (typeof value === 'string') {
@@ -66,9 +66,7 @@ export class LoggingInterceptor implements NestInterceptor {
                   return `${key}: ${value}`;
                 }
               })
-              .join(`\n`) +
-              '\n' +
-              error.stack,
+              .join(`\n`),
             '',
           );
           //this.logger.error(`${message}\n${error.stack}`, '');

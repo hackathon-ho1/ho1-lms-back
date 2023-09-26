@@ -17,10 +17,10 @@ export class LectureProvider {
   ): Promise<Course[]> {
     const result = await this.databaseProvider.execute(
       `SELECT course.*, 
-            COUNT(lecdture.id) AS lectureCount, 
+            COUNT(lecture.id) AS lectureCount, 
             COUNT(gotgam.id) AS doneCount, 
             CAST(IFNULL(COUNT(gotgam.id)/COUNT(lecture.id)*100, 0) AS SIGNED) AS progress
-        FROM course
+        FROM courdse
         LEFT JOIN lecture ON course.id = lecture.courseId 
         LEFT JOIN gotgam ON course.id = gotgam.courseId AND lecture.id = gotgam.lectureId AND gotgam.userId = ?
         WHERE course.id < ?

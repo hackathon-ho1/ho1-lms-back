@@ -8,6 +8,7 @@ import {
   Put,
   Body,
   Query,
+  HttpException,
 } from '@nestjs/common';
 import {
   GetCoursesResponseDto,
@@ -45,6 +46,13 @@ export class LectureController {
     @Param('courseId') courseId: number,
     @Query('userId') userId: number,
   ) {
+    //throw new Error('테스트네임');
+    // console.log(Object.keys(error));
+    // console.log(Object.getOwnPropertyNames(error));
+
+    throw new HttpException('test', 200);
+    // console.log(Object.keys(exception));
+    // console.log(Object.getOwnPropertyNames(exception));
     const result = await this.lecturerService.getCourse(userId, courseId);
     return this.mapper.courseDomainToDto(result);
   }
